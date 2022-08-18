@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthProvider } from '../auth/AuthProvider';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Color, CONTANTS } from '../contants';
 import { NavigationContainer } from '@react-navigation/native'
 import FoodStack from './FoodStack'
@@ -21,22 +21,21 @@ const screenOptions = ({route}) => ({
     let iconName = ''
     switch(screenName){
       case CONTANTS.FOODS_SCREEN:
-        iconName = 'fastfood'
+        iconName = 'fast-food-outline'
         break
       case CONTANTS.CARTS_SCREEN:
-        iconName = 'work'
+        iconName = 'cart-outline'
         break
       case CONTANTS.BILLS_SCREEN:
-        iconName = 'payments'
+        iconName = 'card-outline'
         break
       case CONTANTS.SETTINGS_SCREEN:
-        iconName = 'settings'
+        iconName = 'settings-outline'
         break
       default:
-        
         break
     }
-    return <MaterialIcons
+    return <Ionicons
       name={iconName} color={color} size={size}
     />
   },
@@ -64,6 +63,5 @@ export default function Providers() {
         />
       </Tab.Navigator>
     </NavigationContainer>
-    
   );
 }
