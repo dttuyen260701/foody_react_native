@@ -13,11 +13,11 @@ const SlideShow = (props) => {
   const setNextPage = useRef()
 
   useEffect(()=> {
-    setNextPage.current = setInterval(() => {
+    setNextPage.current = setTimeout(() => {
       const next_page = (selected === (images.length - 1)) ? 0 : WIDTH*(selected + 1)
       scroll.current.scrollTo({ x: next_page, y: 0, animated: true })
     }, 3000);
-    return () => clearInterval(setNextPage.current)
+    return () => clearTimeout(setNextPage.current)
   }, [selected])
 
   const onChange = ({nativeEvent}) => {

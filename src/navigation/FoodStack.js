@@ -13,7 +13,7 @@ const screenOptions = ({route}) => ({
 const FoodStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName={CONTANTS.FOODS_SCREEN}
+      initialRouteName={'FoodScreen'}
       screenOptions = {screenOptions}
     >
       <Stack.Screen

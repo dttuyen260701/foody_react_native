@@ -18,6 +18,7 @@ const Toolbar = (props) => {
       />}
       <Text
         style = {style_Toolbar.tittle}
+        numberOfLines={1}
       >
         {title}
       </Text>
@@ -47,7 +48,8 @@ const style_Toolbar = StyleSheet.create({
     textAlign:'center',
     fontSize: FontSize.title,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    paddingHorizontal: 5
   }
 })
 

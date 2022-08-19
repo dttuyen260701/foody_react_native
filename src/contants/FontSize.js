@@ -1,5 +1,5 @@
 export default {
-  title: 25,
+  title: 23,
   big: 20,
   medium: 17,
   small: 15

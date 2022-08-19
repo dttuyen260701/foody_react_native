@@ -1,10 +1,8 @@
 import { View, Text, SafeAreaView, StyleSheet, TextInput, FlatList} from 'react-native'
 import React, { useState } from 'react'
-import Toolbar from '../components/Toolbar'
+import {Toolbar, SlideShow , FoodItem} from '../components'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Color, FontSize } from '../contants';
-import SlideShow from '../components/SlideShow';
-import FoodItem from '../components/FoodItem';
 
 const FoodScreen = (props) => {
   const [searchText, setSearchText] = useState('')
@@ -29,7 +27,7 @@ const FoodScreen = (props) => {
       "Rate": "4.76471",
       "Status": "1",
       "Is_Available": "1",
-      "is_Favorite": false
+      "is_Favorite": true
     },
     {
       "ID_Food": "2",
@@ -53,7 +51,7 @@ const FoodScreen = (props) => {
       "Rate": "4.83333",
       "Status": "1",
       "Is_Available": "1",
-      "is_Favorite": false
+      "is_Favorite": true
     },
     {
       "ID_Food": "4",
@@ -98,8 +96,8 @@ const FoodScreen = (props) => {
       food.Name_Food.toLowerCase().includes(searchText.toLowerCase()))
   )
 
-  const onFoodClick = (item) => {
-    navigate('DetailScreen', {food:item})
+  const onFoodClick = (item, amount) => {
+    navigate('DetailScreen', {food:item, amount: amount})
   }
   
   //navigation
@@ -110,7 +108,7 @@ const FoodScreen = (props) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Toolbar
-        title = {'Food'}
+        title = {'Foods'}
       />
       <View style = {style_Food_Screen.search_view}>
         <Ionicons
@@ -138,7 +136,7 @@ const FoodScreen = (props) => {
           <FoodItem 
             food={item}
             key={item.ID_Food}
-            onClick = {() => onFoodClick(item)}
+            onClick = {onFoodClick}
           />
         )}
         style={{marginTop: 2, flex:1}}

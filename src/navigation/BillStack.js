@@ -1,11 +1,30 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { BillDetailScreen, BillScreen } from '../screens';
+
+const Stack = createNativeStackNavigator();
+
+const screenOptions = ({route}) => ({
+  headerShown: false,
+})
+
 
 const BillStack = () => {
   return (
-    <View>
-      <Text>BillStack</Text>
-    </View>
+    <Stack.Navigator 
+      initialRouteName={'BillScreen'}
+      screenOptions = {screenOptions}
+    >
+      <Stack.Screen
+        name= {'BillScreen'}
+        component = {BillScreen}
+      />
+      <Stack.Screen
+        name= {'DetailScreen'}
+        component = {BillDetailScreen}
+      />
+    </Stack.Navigator>
   )
 }
 
