@@ -41,7 +41,7 @@ const screenOptions = ({route}) => ({
   },
 })
 
-export default function Providers() {
+export default function Routes() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions = {screenOptions}>

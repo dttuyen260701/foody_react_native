@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BillDetailScreen, BillScreen } from '../screens';
+import { CartScreen, BillScreen, FeedBackScreen } from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +22,11 @@ const BillStack = () => {
       />
       <Stack.Screen
         name= {'DetailScreen'}
-        component = {BillDetailScreen}
+        component = {CartScreen}
+      />
+      <Stack.Screen
+        name= {'FeedBackScreen'}
+        component = {FeedBackScreen}
       />
     </Stack.Navigator>
   )

@@ -94,7 +94,7 @@ const BillScreen = (props) => {
   const {navigate, goBack} = navigation
 
   const onItemPress = (bill) => {
-    navigate('DetailScreen', {bill:bill})
+    navigate('DetailScreen', {bill:bill, for_screen:false})
   }
 
   return (

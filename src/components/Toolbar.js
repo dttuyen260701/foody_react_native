@@ -14,7 +14,10 @@ const Toolbar = (props) => {
         size={33}
         onPress = {left_Press}
         color = 'white'
-        style = {style_Toolbar.icon}
+        style = {{
+          ...style_Toolbar.icon,
+          left: 0
+        }}
       />}
       <Text
         style = {style_Toolbar.tittle}
@@ -27,7 +30,10 @@ const Toolbar = (props) => {
         size={33}
         onPress = {right_Press}
         color = 'white'
-        style = {style_Toolbar.icon}
+        style = {{
+          ...style_Toolbar.icon,
+          right: 0
+        }}
       />}
     </View>
   )
@@ -41,7 +47,8 @@ const style_Toolbar = StyleSheet.create({
     alignItems:'center',
   },
   icon:{
-    padding: 5
+    padding: 5,
+    position: 'absolute',
   },
   tittle:{
     flex: 1,
@@ -49,7 +56,7 @@ const style_Toolbar = StyleSheet.create({
     fontSize: FontSize.title,
     fontWeight: 'bold',
     color: 'white',
-    paddingHorizontal: 5
+    marginHorizontal: 40,
   }
 })
 

@@ -3,7 +3,8 @@ import CartScreen from './CartScreen'
 import FoodDetailScreen from './FoodDetailScreen'
 import FoodScreen from './FoodScreen'
 import SettingScreen from './SettingScreen'
-import BillDetailScreen from './BillDetailScreen'
+import PickMapScreen from './PickMapScreen'
+import FeedBackScreen from './FeedBackScreen'
 
 export {
   BillScreen,
@@ -11,5 +12,6 @@ export {
   FoodDetailScreen,
   FoodScreen,
   SettingScreen,
-  BillDetailScreen
+  PickMapScreen,
+  FeedBackScreen
 }

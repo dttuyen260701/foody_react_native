@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Alert, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, FlatList, Alert, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import {FirstReviewItem, ReviewItem, Toolbar} from '../components'
 import { HEIGHT, WIDTH } from '../contants/Contants'
@@ -113,7 +113,7 @@ const FoodDetailScreen = (props) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor:'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor:'white'}}>
       <Toolbar
         title = {food.Name_Food}
         left_icon = {'chevron-back-outline'}
@@ -167,7 +167,7 @@ const FoodDetailScreen = (props) => {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

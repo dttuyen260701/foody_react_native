@@ -5,6 +5,8 @@ import BorderItem from "./BorderItem"
 import FirstReviewItem from "./FirstReviewItem"
 import ReviewItem from "./ReviewItem"
 import BillItem from "./BillItem"
+import CartItem from "./CartItem"
+import FeedBackItem from "./FeedBackItem"
 
 export {
   Toolbar,
@@ -13,5 +15,7 @@ export {
   BorderItem,
   FirstReviewItem,
   ReviewItem,
-  BillItem
+  BillItem,
+  CartItem,
+  FeedBackItem
 }
