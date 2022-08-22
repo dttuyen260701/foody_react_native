@@ -1,9 +1,10 @@
 import { View, Text, FlatList, Alert, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {FirstReviewItem, ReviewItem, Toolbar} from '../components'
 import { HEIGHT, WIDTH } from '../contants/Contants'
-import { Color, FontSize } from '../contants'
+import { Color, FontSize, Methods } from '../contants'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useBillState, Actions } from '../provider'
 
 const FoodDetailScreen = (props) => {
   
@@ -12,97 +13,36 @@ const FoodDetailScreen = (props) => {
   //function of navigate to/back
   const {navigate, goBack} = navigation
 
-  const food = route.params.food
-  
-  const [amount, setAmount] = useState(route.params.amount)
+  const [state, dispatch] = useBillState()
 
-  const [reviews, SetReviews] = useState([
+  const food = route.params.food
+
+  const [reviews, setReviews] = useState([
     {
       'food': food
     },
-    {
-      "Name_Cus": "Vua Do An",
-      "Time": "2022-01-13 00:00:00",
-      "Rate": "4",
-      "Reviews": " "
-    },
-    {
-      "Name_Cus": "Vua Do An",
-      "Time": "2022-01-25 21:05:00",
-      "Rate": "5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Vua Do An",
-      "Time": "2022-01-25 21:51:00",
-      "Rate": "4.5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Vua Do An",
-      "Time": "2022-01-25 21:52:00",
-      "Rate": "5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Thanh Tuyen",
-      "Time": "2022-01-28 19:07:00",
-      "Rate": "5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Thanh Tuyen",
-      "Time": "2022-01-31 01:24:00",
-      "Rate": "5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Thanh Tuyen",
-      "Time": "2022-01-31 01:34:00",
-      "Rate": "5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Thanh Tuyen",
-      "Time": "2022-01-31 20:55:00",
-      "Rate": "4.5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Thanh Tuyen",
-      "Time": "2022-01-31 21:08:00",
-      "Rate": "5",
-      "Reviews": ""
-    },
-    {
-      "Name_Cus": "Thanh Tuyen",
-      "Time": "2022-02-01 01:31:00",
-      "Rate": "4.5",
-      "Reviews": "okk"
-    },
-    {
-      "Name_Cus": "Thanh Tuyen",
-      "Time": "2022-02-01 01:43:00",
-      "Rate": "5",
-      "Reviews": "ok"
-    },
-    {
-      "Name_Cus": "Review Foode",
-      "Time": "2022-02-17 10:16:00",
-      "Rate": "5",
-      "Reviews": ""
-    }
   ])
 
+  useEffect(() => {
+    Methods.load_reviews_data(food.ID_Food).then(respone_rv => {
+      setReviews([
+        {
+          'food': food
+        },
+        ...respone_rv
+      ])
+    }).catch(err => console.log(err))
+  }, [food])
+
   const increase = () => {
-    setAmount(prev => setAmount(prev + 1))
+    dispatch(Actions.increase_bill_detail(food))
   }
 
   const reduce = () => {
-    if(amount === 0){
+    if(food.Count === 0){
       return
     }
-    setAmount(prev => setAmount(prev - 1))
+    dispatch(Actions.reduce_bill_detail(food))
   }
 
   const info_click = () => {
@@ -153,7 +93,7 @@ const FoodDetailScreen = (props) => {
         <Text
           style = {style_Food_Detail.food_amout}
         >
-          {amount}
+          {food.Count}
         </Text>
         <TouchableOpacity
           style = {style_Food_Detail.food_add_sub_btn}

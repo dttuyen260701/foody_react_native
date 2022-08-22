@@ -8,6 +8,7 @@ import FoodStack from './FoodStack'
 import CartStack from './CartStack'
 import BillStack from './BillStack'
 import SettingStack from './SettingStack'
+import {BillProvider} from '../provider'
 
 const Tab = createBottomTabNavigator()
 
@@ -43,25 +44,27 @@ const screenOptions = ({route}) => ({
 
 export default function Routes() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator screenOptions = {screenOptions}>
-        <Tab.Screen
-          name = {CONTANTS.FOODS_SCREEN}
-          component = {FoodStack}
-        />
-        <Tab.Screen
-          name = {CONTANTS.CARTS_SCREEN}
-          component = {CartStack}
-        />
-        <Tab.Screen
-          name = {CONTANTS.BILLS_SCREEN}
-          component = {BillStack}
-        />
-        <Tab.Screen
-          name = {CONTANTS.SETTINGS_SCREEN}
-          component = {SettingStack}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <BillProvider>
+      <NavigationContainer>
+        <Tab.Navigator screenOptions = {screenOptions}>
+          <Tab.Screen
+            name = {CONTANTS.FOODS_SCREEN}
+            component = {FoodStack}
+          />
+          <Tab.Screen
+            name = {CONTANTS.CARTS_SCREEN}
+            component = {CartStack}
+          />
+          <Tab.Screen
+            name = {CONTANTS.BILLS_SCREEN}
+            component = {BillStack}
+          />
+          <Tab.Screen
+            name = {CONTANTS.SETTINGS_SCREEN}
+            component = {SettingStack}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </BillProvider>
   );
 }

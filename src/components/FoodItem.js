@@ -1,21 +1,25 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Color, FontSize } from '../contants'
 import BorderItem from './BorderItem'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Actions, useBillState } from '../provider';
+import { ACTION_INCREASE_BILL_DT, ACTION_REDUCE_BILL_DT } from '../contants/Contants';
 
 const FoodItem = (props) => {
 
   const {food, onClick} = props
 
-  const [amount, setAmount] = useState(0)
+  const [state, dispatch] = useBillState()
+
+  // console.log('render')
 
   const increase = () => {
-    setAmount(prev => setAmount(prev + 1))
+    dispatch(Actions.increase_bill_detail(food))
   }
 
   const reduce = () => {
-    setAmount(prev => setAmount(prev - 1))
+    dispatch(Actions.reduce_bill_detail(food))
   }
 
   const fav_click = () => {
@@ -25,7 +29,7 @@ const FoodItem = (props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={() => onClick(food, amount)}
+      onPress={() => onClick(food)}
     >
       <BorderItem/>
       <View style = {style_Food_Item.parent}>
@@ -77,7 +81,7 @@ const FoodItem = (props) => {
               $ {food.Frice_Food}
             </Text>
             <View style = {style_Food_Item.food_add_cart}>
-              {amount > 0 && <TouchableOpacity
+              {food.Count > 0 && <TouchableOpacity
                 style = {style_Food_Item.food_add_sub_btn}
                 onPress = {reduce}
                 activeOpacity = {0.9}
@@ -88,10 +92,10 @@ const FoodItem = (props) => {
                   color={'white'}
                 />
               </TouchableOpacity>}
-              {amount > 0 && <Text
+              {food.Count  > 0 && <Text
                 style = {style_Food_Item.food_amout}
               >
-                {amount}
+                {food.Count}
               </Text>}
               <TouchableOpacity
                 style = {style_Food_Item.food_add_sub_btn}
