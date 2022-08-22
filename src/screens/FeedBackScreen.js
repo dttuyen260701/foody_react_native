@@ -13,7 +13,7 @@ const FeedBackScreen = (props) => {
   const billDetails = route.params.billDetails
 
   return (
-    <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
+    <SafeAreaView style={{height: HEIGHT*13/14 - 10, backgroundColor:'white'}}>
       <Toolbar
         title = 'Your FeedBack'
         left_icon = 'chevron-back-outline'
@@ -53,10 +53,12 @@ const style_FB_Scr = StyleSheet.create({
     fontSize: FontSize.medium,
     height: 40,
     textAlignVertical:'center',
+    textAlign: 'center',
     fontWeight: 'bold'
   },
   list_feedback:{
-    flex :1,
+    // height: HEIGHT*13/14 - 40 - 40
+    flex: 1
   },
   button:{
     height: HEIGHT*1/14,
