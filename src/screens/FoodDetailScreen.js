@@ -1,9 +1,9 @@
-import { View, Text, FlatList, Alert, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, FlatList, Alert, TouchableOpacity, StyleSheet, SafeAreaView, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {FirstReviewItem, ReviewItem, Toolbar} from '../components'
 import { HEIGHT, WIDTH } from '../contants/Contants'
 import { Color, FontSize, Methods } from '../contants'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useBillState, Actions } from '../provider'
 
 const FoodDetailScreen = (props) => {
@@ -17,22 +17,50 @@ const FoodDetailScreen = (props) => {
 
   const food = route.params.food
 
-  const [reviews, setReviews] = useState([
-    {
-      'food': food
-    },
-  ])
+  const [state_RV, setState_RV] = useState({
+    refreshing: false,
+    reviews: [
+      {
+        'food': food
+      },
+    ]
+  })
 
   useEffect(() => {
     Methods.load_reviews_data(food.ID_Food).then(respone_rv => {
-      setReviews([
+      setState_RV({
+        refreshing:false,
+        reviews: [
+          {
+            'food': food
+          },
+          ...respone_rv
+        ]
+      })
+    }).catch(err => console.log(err))
+  }, [])
+
+  const load_rv = () => {
+    setState_RV({
+      refreshing: true,
+      reviews: [
         {
           'food': food
         },
-        ...respone_rv
-      ])
+      ]
+    })
+    Methods.load_reviews_data(food.ID_Food).then(respone_rv => {
+      setState_RV({
+        refreshing:false,
+        reviews: [
+          {
+            'food': food
+          },
+          ...respone_rv
+        ]
+      })
     }).catch(err => console.log(err))
-  }, [food])
+  }
 
   const increase = () => {
     dispatch(Actions.increase_bill_detail(food))
@@ -62,7 +90,7 @@ const FoodDetailScreen = (props) => {
         right_Press = {() => info_click()}
       />
       <FlatList
-        data = {reviews}
+        data = {state_RV.reviews}
         renderItem = {({item, index}) => (
           (index === 0) ?
           <FirstReviewItem
@@ -75,6 +103,12 @@ const FoodDetailScreen = (props) => {
           />
         )}
         style={{marginTop: 0, flex:1}}
+        refreshControl = {
+          <RefreshControl
+            refreshing = {state_RV.refreshing}
+            onRefresh = {() => load_rv()}
+          />
+        }
       />
       <View 
         style={style_Food_Detail.parent_view}

@@ -26,13 +26,16 @@ const FeedBackItem = (props) => {
           type='custom'
           ratingCount={5}
           imageSize={30}
-          startingValue={5}
+          startingValue={(parseInt(feedback.Rate) === 0) ? 5 : parseInt(feedback.Rate)}
           style = {{height: HEIGHT*20/300, justifyContent:'center'}}
+          readonly = {!(parseInt(feedback.Rate) === 0)}
         />
         <TextInput
-          placeholder={'Your feeling'}
+          placeholder={(parseInt(feedback.Rate) === 0) ? 'Your feeling' : ''}
           style={style_FB_item.text_area}
           placeholderTextColor={Color.border_color}
+          value = {feedback.Reviews}
+          editable = {(parseInt(feedback.Rate) === 0)}
           multiline
         />
       </View>

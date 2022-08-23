@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FeedBackItem, Toolbar } from '../components'
 import { Color, FontSize } from '../contants'
 import { WIDTH, HEIGHT } from '../contants/Contants'
@@ -10,7 +10,18 @@ const FeedBackScreen = (props) => {
 
   const {navigate, goBack} = navigation
 
+  const [done, setDone] = useState(false)
+
   const billDetails = route.params.billDetails
+
+  useEffect(() => {
+    let temp = billDetails.filter((item) => (
+      (parseInt(item.Rate) === 0)
+    ))
+    if(temp.length === 0){
+      setDone(true)
+    } 
+  }, [])
 
   return (
     <SafeAreaView style={{height: HEIGHT*13/14 - 10, backgroundColor:'white'}}>
@@ -33,7 +44,7 @@ const FeedBackScreen = (props) => {
           />
         )}
       />
-      <TouchableOpacity 
+      {!done && <TouchableOpacity 
         style = {style_FB_Scr.button}
         onPress = {() => {}}
         activeOpacity = {0.9}
@@ -41,7 +52,7 @@ const FeedBackScreen = (props) => {
         <Text style={style_FB_Scr.text_btn}>
           SEND US
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity>}
     </SafeAreaView>
   )
 }

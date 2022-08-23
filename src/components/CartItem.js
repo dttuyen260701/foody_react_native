@@ -3,19 +3,20 @@ import React, { useState } from 'react'
 import { Color, FontSize } from '../contants'
 import BorderItem from './BorderItem'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Actions, useBillState } from '../provider';
 
 const CartItem = (props) => {
   
   const {cartItem, for_screen} = props
 
-  const [amount, setAmount] = useState(parseInt(cartItem.Count))
+  const [state, dispatch] = useBillState()
 
   const increase = () => {
-    setAmount(prev => setAmount(prev + 1))
+    dispatch(Actions.increase_bill_detail(cartItem))
   }
 
   const reduce = () => {
-    setAmount(prev => setAmount(prev - 1))
+    dispatch(Actions.reduce_bill_detail(cartItem))
   }
 
   return (
@@ -51,7 +52,7 @@ const CartItem = (props) => {
               <Text
                 style = {style_CartItem.food_amout}
               >
-                x{amount}
+                x{parseInt(cartItem.Count)}
               </Text>
               {for_screen && <TouchableOpacity
                 style = {style_CartItem.food_add_sub_btn}
@@ -71,7 +72,7 @@ const CartItem = (props) => {
               style = {style_CartItem.food_price}
               numberOfLines={1}
             >
-              $ {cartItem.Price_Total}
+              $ {(Math.round(cartItem.Price_Total*100)/100).toFixed(2)}
             </Text>
           </View>
         </View>

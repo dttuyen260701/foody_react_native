@@ -1,16 +1,32 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { HEIGHT, WIDTH } from '../contants/Contants'
-import { Color, FontSize } from '../contants'
+import { Color, FontSize, Methods } from '../contants'
 import {Rating} from 'react-native-ratings'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Actions, useBillState } from '../provider'
 
 const FirstReviewItem = (props) => {
 
+  const [state, dispatch] = useBillState()
+
   const {food} = props
+  
+  const update_Favorite = () => {
+    Methods.del_insert_favorite(food.ID_Food, state.user.ID_Cus, food.is_Favorite)
+      .then(resp => {
+        if(resp){
+          dispatch(Actions.set_favorite({'ID_Food': food.ID_Food, 'is_Favorite': !food.is_Favorite}))
+        }
+      }).catch(err => console.log(err))
+  }
 
   const fav_btn = () => {
-    alert('first item fav')
+    if(state.user.ID_Cus !== -1) {
+      update_Favorite()
+    } else {
+      alert('Please login to add to favorite list.')
+    }
   }
 
   return (

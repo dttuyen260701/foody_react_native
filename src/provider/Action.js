@@ -1,4 +1,4 @@
-import { ACTION_CLEAR_BILLS, ACTION_GET_FAVORITE, ACTION_INCREASE_BILL_DT, ACTION_REDUCE_BILL_DT, ACTION_SET_BILL, ACTION_SET_FOODS, ACTION_SET_RELOAD, ACTION_SET_RESTAURANT, ACTION_SET_USER } from "../contants/Contants";
+import { ACTION_CLEAR_BILLS, ACTION_GET_FAVORITE, ACTION_INCREASE_BILL_DT, ACTION_REDUCE_BILL_DT, ACTION_SET_BILL, ACTION_SET_FAVORITE, ACTION_SET_FOODS, ACTION_SET_RELOAD, ACTION_SET_RESTAURANT, ACTION_SET_USER } from "../contants/Contants";
 
 export const increase_bill_detail = payload => ({
   type: ACTION_INCREASE_BILL_DT,
@@ -22,6 +22,11 @@ export const set_user = payload => ({
 
 export const get_favorite = payload => ({
   type: ACTION_GET_FAVORITE,
+  payload
+})
+
+export const set_favorite = payload => ({
+  type: ACTION_SET_FAVORITE,
   payload
 })
 

@@ -1,9 +1,9 @@
-import { View, Text, SafeAreaView, StyleSheet, TextInput, FlatList} from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TextInput, FlatList, RefreshControl} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {Toolbar, SlideShow , FoodItem} from '../components'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Color, FontSize } from '../contants';
-import { useBillState } from '../provider';
+import { Color, FontSize, Methods } from '../contants';
+import { Actions, useBillState } from '../provider';
 
 const FoodScreen = (props) => {
   const [searchText, setSearchText] = useState('')
@@ -13,9 +13,26 @@ const FoodScreen = (props) => {
   // const [foods, setFoods] = useState(state.foods)
   const foods = state.foods
 
-  useEffect(() => {
-    
-  }, [])
+  const load_food = () => {
+    dispatch(Actions.set_reload({
+      reload: true,
+      foods: []
+    }))
+    Methods.load_restaurant_food().then(respone_res => {
+      dispatch(Actions.set_restaurant(respone_res[0]))
+      Methods.load_food_data().then(respone_food => {
+        dispatch(Actions.set_reload({
+          reload: false,
+          foods: respone_food
+        }))
+        if(state.user.ID_Cus !== -1){
+          Methods.load_favorite_data(state.user.ID_Cus).then(respone_fav => {
+            dispatch(Actions.get_favorite(respone_fav))
+          }).catch(err => console.log(err))
+        }
+      }).catch(err => console.log(err))
+    }).catch(err => console.log(err))
+  }
 
   const filterList = () => foods.filter((food, index) => 
     (index === 0 ||
@@ -66,6 +83,12 @@ const FoodScreen = (props) => {
           />
         )}
         style={{marginTop: 2, flex:1}}
+        refreshControl = {
+          <RefreshControl
+            refreshing = {state.reload}
+            onRefresh = {() => load_food()}
+          />
+        }
       />
     </SafeAreaView>
   )

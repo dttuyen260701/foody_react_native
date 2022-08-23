@@ -1,4 +1,15 @@
-import { ACTION_CLEAR_BILLS, ACTION_GET_FAVORITE, ACTION_INCREASE_BILL_DT, ACTION_REDUCE_BILL_DT, ACTION_SET_BILL, ACTION_SET_FOODS, ACTION_SET_RELOAD, ACTION_SET_RESTAURANT, ACTION_SET_USER } from "../contants/Contants"
+import { 
+  ACTION_CLEAR_BILLS, 
+  ACTION_GET_FAVORITE, 
+  ACTION_INCREASE_BILL_DT, 
+  ACTION_REDUCE_BILL_DT, 
+  ACTION_SET_BILL, 
+  ACTION_SET_FAVORITE, 
+  ACTION_SET_FOODS, 
+  ACTION_SET_RELOAD, 
+  ACTION_SET_RESTAURANT, 
+  ACTION_SET_USER 
+} from "../contants/Contants"
 
 const initState = {
   user:{
@@ -10,12 +21,12 @@ const initState = {
   bill:{
     "ID_Bill": "-1",
     "ID_Cus": "0",
-    "Total": "0",
+    "Total": 0.0,
     "Time": "",
     "Address": "",
-    "Shipping_fee": "0",
-    "done": "0",
-    "distance": '0'
+    "Shipping_fee": 0,
+    "done": '0',
+    "distance": 0
   },
   foods:[
     // {
@@ -111,29 +122,42 @@ const initState = {
 }
 
 const reducer = (state, action) => {
-  let bill_details_temp = [...state.foods]
+  let total = 0
   switch(action.type) {
     case ACTION_INCREASE_BILL_DT:
-      bill_details_temp.map((item) => {
+      state.foods.map((item) => {
         if(item.ID_Food === action.payload.ID_Food){
           item.Count = Math.round(item.Count) + 1
-          item.Price_Total = action.payload.Frice_Food * item.Count
+          item.Price_Total = Math.round(action.payload.Frice_Food) * item.Count
         }
       })
+      state.foods.map((item, index)=> {
+        if(index > 0){
+          total = total + item.Price_Total
+        }
+      })
+      state.bill.Total = (total >= 0) ? total : 0
       return {
         ...state,
-        foods: bill_details_temp
+        bill: {
+          ...state.bill
+        }
       }
     case ACTION_REDUCE_BILL_DT:
-      bill_details_temp.map((item) => {
+      state.foods.map((item) => {
         if(item.ID_Food === action.payload.ID_Food){
           item.Count = item.Count - 1
-          item.Price_Total = action.payload.Frice_Food * item.Count
+          item.Price_Total = Math.round(action.payload.Frice_Food) * item.Count
         }
       })
+      state.foods.map((item, index)=> {
+        if(index > 0){
+          total = total + item.Price_Total
+        }
+      })
+      state.bill.Total = (total >= 0) ? total : 0
       return {
-        ...state,
-        foods: bill_details_temp
+        ...state
       }
     case ACTION_SET_USER:
       return {
@@ -141,7 +165,7 @@ const reducer = (state, action) => {
         user: action.payload
       }
     case ACTION_GET_FAVORITE:
-      bill_details_temp.map((item) => {
+      state.foods.map((item) => {
         action.payload.map((favorite) => {
           if(item.ID_Food === favorite.ID_Food){
             item.is_Favorite = true
@@ -150,7 +174,15 @@ const reducer = (state, action) => {
       })
       return {
         ...state,
-        foods: bill_details_temp
+      }
+    case ACTION_SET_FAVORITE:
+      state.foods.map((item) => {
+        if(item.ID_Food === action.payload.ID_Food){
+          item.is_Favorite = action.payload.is_Favorite
+        }
+      })
+      return {
+        ...state
       }
     case ACTION_SET_RESTAURANT:
       return {
@@ -158,9 +190,16 @@ const reducer = (state, action) => {
         restaurant: action.payload
       }
     case ACTION_CLEAR_BILLS:
+      state.foods.map((item) => {
+        item.Count = 0
+        item.Price_Total = 0
+      })
       return {
         ...state,
-        foods: []
+        bill:{
+          ...state.bill,
+          "Total": 0
+        }
       }
     case ACTION_SET_FOODS:
       return {
@@ -174,7 +213,18 @@ const reducer = (state, action) => {
     case ACTION_SET_RELOAD:
       return {
         ...state,
-        reload: action.payload
+        bill:{
+          ...state.bill,
+          "Total": 0,
+        },
+        reload: action.payload.reload,
+        foods: [
+          {
+            "ID_Food": "-1",
+            "Name_Food": "Slide",
+            SlideShow: [state.restaurant.Link_Slide_1, state.restaurant.Link_Slide_2]
+          }
+          ,...action.payload.foods]
       }
     case ACTION_SET_BILL:
       return {

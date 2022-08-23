@@ -1,13 +1,18 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { BorderItem, Toolbar } from '../components'
-import { FontSize } from '../contants'
+import { FontSize, Methods } from '../contants'
+import { Actions, useBillState } from '../provider'
+import { FOODS_SCREEN } from '../contants/Contants'
 
-const SettingScreen = () => {
+const SettingScreen = (props) => {
 
-  const [user, setUser] = useState({
+  //navigation
+  const {navigation, route} = props
+  //function of navigate to/back
+  const {navigate, goBack} = navigation
 
-  })
+  const [state, dispatch] = useBillState()
 
   return (
     <SafeAreaView>
@@ -15,30 +20,45 @@ const SettingScreen = () => {
         title = {'Settings'}
       />
       <Text style={style_Settings.text_Thanks}>
-        Vua Do An
       </Text>
       <BorderItem/>
       <TouchableOpacity
         style = {style_Settings.btn}
-        onPress = {() => {}}
+        onPress = {() => {
+          if(state.user.ID_Cus === -1){
+            navigate('LoginScreen', {mail:'', pass:''})
+          } else {
+            navigate('InformationScreen')
+          }
+        }}
       >
         <Text style = {style_Settings.text_btn}>
-          Your Information
+          {state.user.ID_Cus === -1 ? 'Sign In' : 'Your Information'}
         </Text>
       </TouchableOpacity>
       <BorderItem/>
       <TouchableOpacity
         style = {style_Settings.btn}
-        onPress = {() => {}}
+        onPress = {() => {
+          if(state.user.ID_Cus === -1){
+            navigate('ResgisterScreen')
+          } else {
+            dispatch(Actions.set_user({ID_Cus: -1}))
+            Methods.saveUser('-1')
+            navigate(FOODS_SCREEN)
+          }
+        }}
       >
         <Text style = {style_Settings.text_btn}>
-          Log Out
+          {state.user.ID_Cus === -1 ? 'Sign Up' : 'Log Out'}
         </Text>
       </TouchableOpacity>
       <BorderItem/>
       <TouchableOpacity
         style = {style_Settings.btn}
-        onPress = {() => {}}
+        onPress = {() => {
+          navigate('AboutUsScreen')
+        }}
       >
         <Text style = {style_Settings.text_btn}>
           About Us
@@ -47,7 +67,9 @@ const SettingScreen = () => {
       <BorderItem/>
       <TouchableOpacity
         style = {style_Settings.btn}
-        onPress = {() => {}}
+        onPress = {() => {
+          navigate('TOSScreen')
+        }}
       >
         <Text style = {style_Settings.text_btn}>
           Terms of use and privacy policy 

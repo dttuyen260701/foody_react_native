@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { Color, FontSize } from '../contants'
+import { Color, FontSize, Methods } from '../contants'
 import BorderItem from './BorderItem'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Actions, useBillState } from '../provider';
@@ -22,8 +22,21 @@ const FoodItem = (props) => {
     dispatch(Actions.reduce_bill_detail(food))
   }
 
+  const update_Favorite = () => {
+    Methods.del_insert_favorite(food.ID_Food, state.user.ID_Cus, food.is_Favorite)
+      .then(resp => {
+        if(resp){
+          dispatch(Actions.set_favorite({'ID_Food': food.ID_Food, 'is_Favorite': !food.is_Favorite}))
+        }
+      }).catch(err => console.log(err))
+  }
+
   const fav_click = () => {
-    alert('item fav')
+    if(state.user.ID_Cus !== -1) {
+      update_Favorite()
+    } else {
+      alert('Please login to add to favorite list.')
+    }
   }
 
   return (
@@ -78,7 +91,7 @@ const FoodItem = (props) => {
               style = {style_Food_Item.food_price}
               numberOfLines={1}
             >
-              $ {food.Frice_Food}
+              $ {(Math.round(food.Frice_Food*100)/100).toFixed(2)}
             </Text>
             <View style = {style_Food_Item.food_add_cart}>
               {food.Count > 0 && <TouchableOpacity
