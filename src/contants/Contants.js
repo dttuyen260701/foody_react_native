@@ -18,6 +18,8 @@ export const ACTION_SET_RESTAURANT = 'SET_RESTAURANT'
 export const ACTION_SET_FOODS = 'SET_FOODS'
 export const ACTION_SET_BILL = 'SET_BILL'
 export const ACTION_SET_RELOAD = 'SET_RELOAD'
+export const ACTION_SET_BILL_RELOAD = 'SET_BILL_RELOAD'
+export const ACTION_DONE_INSERT_BILL = 'DONE_INSERT_BILL'
 
 export const URL_SERVER = 'https://tuyen2607.000webhostapp.com/'
 export const URL_FOOD_API = URL_SERVER + "api_food.php";

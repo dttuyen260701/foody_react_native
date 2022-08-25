@@ -25,7 +25,7 @@ const SettingScreen = (props) => {
       <TouchableOpacity
         style = {style_Settings.btn}
         onPress = {() => {
-          if(state.user.ID_Cus === -1){
+          if(state.user.ID_Cus == '-1'){
             navigate('LoginScreen', {mail:'', pass:''})
           } else {
             navigate('InformationScreen')
@@ -33,24 +33,24 @@ const SettingScreen = (props) => {
         }}
       >
         <Text style = {style_Settings.text_btn}>
-          {state.user.ID_Cus === -1 ? 'Sign In' : 'Your Information'}
+          {state.user.ID_Cus == '-1' ? 'Sign In' : 'Your Information'}
         </Text>
       </TouchableOpacity>
       <BorderItem/>
       <TouchableOpacity
         style = {style_Settings.btn}
         onPress = {() => {
-          if(state.user.ID_Cus === -1){
+          if(state.user.ID_Cus == '-1'){
             navigate('ResgisterScreen')
           } else {
-            dispatch(Actions.set_user({ID_Cus: -1}))
+            dispatch(Actions.set_user({ID_Cus: '-1'}))
             Methods.saveUser('-1')
             navigate(FOODS_SCREEN)
           }
         }}
       >
         <Text style = {style_Settings.text_btn}>
-          {state.user.ID_Cus === -1 ? 'Sign Up' : 'Log Out'}
+          {state.user.ID_Cus == '-1' ? 'Sign Up' : 'Log Out'}
         </Text>
       </TouchableOpacity>
       <BorderItem/>

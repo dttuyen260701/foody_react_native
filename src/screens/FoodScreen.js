@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, StyleSheet, TextInput, FlatList, RefreshControl} from 'react-native'
 import React, { useEffect, useState } from 'react'
-import {Toolbar, SlideShow , FoodItem} from '../components'
+import {Toolbar, SlideShow , FoodItem, LoadItem} from '../components'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Color, FontSize, Methods } from '../contants';
 import { Actions, useBillState } from '../provider';
@@ -25,7 +25,7 @@ const FoodScreen = (props) => {
           reload: false,
           foods: respone_food
         }))
-        if(state.user.ID_Cus !== -1){
+        if(state.user.ID_Cus != -1){
           Methods.load_favorite_data(state.user.ID_Cus).then(respone_fav => {
             dispatch(Actions.get_favorite(respone_fav))
           }).catch(err => console.log(err))
@@ -69,27 +69,30 @@ const FoodScreen = (props) => {
           value={searchText}
         />
       </View>
-      <FlatList
-        data = {filterList()}
-        renderItem = {({item, index}) => (
-          (index === 0) ?
-          (searchText.length === 0 && <SlideShow
-            images = {item.SlideShow}
-          />) :
-          <FoodItem 
-            food={item}
-            key={item.ID_Food}
-            onClick = {onFoodClick}
-          />
-        )}
-        style={{marginTop: 2, flex:1}}
-        refreshControl = {
-          <RefreshControl
-            refreshing = {state.reload}
-            onRefresh = {() => load_food()}
-          />
-        }
-      />
+      {
+        (foods.length <= 1) 
+        ? <LoadItem/> : 
+        <FlatList
+          data = {filterList()}
+          renderItem = {({item, index}) => (
+            (index === 0) ?
+            (searchText.length === 0 && <SlideShow
+              images = {item.SlideShow}
+            />) :
+            <FoodItem 
+              food={item}
+              key={item.ID_Food}
+              onClick = {onFoodClick}
+            />
+          )}
+          style={{marginTop: 2, flex:1}}
+          refreshControl = {
+            <RefreshControl
+              refreshing = {state.reload}
+              onRefresh = {() => load_food()}
+            />
+          }
+        />}
     </SafeAreaView>
   )
 }

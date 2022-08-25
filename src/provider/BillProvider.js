@@ -12,37 +12,39 @@ const BillProvider = ({children}) => {
   const [state, dispatch] = useReducer(reducer, initState)
 
   useEffect(() => {
-
-    const getUser = async () => {
-      try {
-        const value = await AsyncStorage.getItem('user')
-        if(value !== null && value != '-1') {
-          Methods.load_user(value).then(respone => {
-            dispatch(Actions.set_user(respone[0]))
-          }).catch(err => console.log(err))
+    Methods.load_restaurant_food().then(respone_res => {
+      dispatch(Actions.set_restaurant(respone_res[0]))
+      Methods.load_food_data().then(respone_food => {
+        dispatch(Actions.set_foods(respone_food))
+        const get_user = async () => {
+          try {
+            const value = await AsyncStorage.getItem('user')
+            if(value !== null && value != '-1') {
+              Methods.load_user(value).then(respone => {
+                dispatch(Actions.set_user(respone[0]))
+              }).catch(err => console.log(err))
+              Methods.load_favorite_data(value).then(respone_fav => {
+                dispatch(Actions.get_favorite(respone_fav))
+              }).catch(err => console.log(err))
+            }
+          } catch (error) {
+            console.log(error)
+          }
         }
-      } catch(e) {
-        console.log(e)
-      }
-    }
-
-    getUser().then(() => {
-      Methods.load_restaurant_food().then(respone_res => {
-        dispatch(Actions.set_restaurant(respone_res[0]))
-        Methods.load_food_data().then(respone_food => {
-          dispatch(Actions.set_foods(respone_food))
-        }).catch(err => console.log(err))
+        get_user()
       }).catch(err => console.log(err))
     }).catch(err => console.log(err))
   }, [])
 
   useEffect(() => {
-    if(state.user.ID_Cus !== -1){
+    if(state.user.ID_Cus != '-1'){
       Methods.load_favorite_data(state.user.ID_Cus).then(respone_fav => {
         dispatch(Actions.get_favorite(respone_fav))
       }).catch(err => console.log(err))
+    } else {
+      dispatch(Actions.get_favorite([]))
     }
-  }, [state.user.ID_Cus])
+  }, [state.user])
 
   return (
     <BillContext.Provider value={[state, dispatch]}>

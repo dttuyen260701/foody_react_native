@@ -22,7 +22,7 @@ const BillScreen = (props) => {
         ]
       })
     }).catch(err => console.log(err))
-  }, [])
+  }, [state.user.ID_Cus, state.load_bills])
 
   
   const load_bills = () => {

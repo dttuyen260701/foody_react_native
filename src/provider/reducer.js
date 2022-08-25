@@ -1,9 +1,11 @@
 import { 
   ACTION_CLEAR_BILLS, 
+  ACTION_DONE_INSERT_BILL, 
   ACTION_GET_FAVORITE, 
   ACTION_INCREASE_BILL_DT, 
   ACTION_REDUCE_BILL_DT, 
   ACTION_SET_BILL, 
+  ACTION_SET_BILL_RELOAD, 
   ACTION_SET_FAVORITE, 
   ACTION_SET_FOODS, 
   ACTION_SET_RELOAD, 
@@ -13,7 +15,7 @@ import {
 
 const initState = {
   user:{
-    ID_Cus: -1
+    ID_Cus: '-1'
   },
   restaurant:{
 
@@ -23,7 +25,7 @@ const initState = {
     "ID_Cus": "0",
     "Total": 0.0,
     "Time": "",
-    "Address": "",
+    "Address": "Da Nang City",
     "Shipping_fee": 0,
     "done": '0',
     "distance": 0
@@ -118,7 +120,8 @@ const initState = {
     //   "Count": 0
     // }
   ],
-  reload: false
+  reload: false,
+  load_bills: false
 }
 
 const reducer = (state, action) => {
@@ -127,8 +130,8 @@ const reducer = (state, action) => {
     case ACTION_INCREASE_BILL_DT:
       state.foods.map((item) => {
         if(item.ID_Food === action.payload.ID_Food){
-          item.Count = Math.round(item.Count) + 1
-          item.Price_Total = Math.round(action.payload.Frice_Food) * item.Count
+          item.Count = parseInt(item.Count) + 1
+          item.Price_Total = parseFloat(action.payload.Frice_Food) * item.Count
         }
       })
       state.foods.map((item, index)=> {
@@ -146,8 +149,8 @@ const reducer = (state, action) => {
     case ACTION_REDUCE_BILL_DT:
       state.foods.map((item) => {
         if(item.ID_Food === action.payload.ID_Food){
-          item.Count = item.Count - 1
-          item.Price_Total = Math.round(action.payload.Frice_Food) * item.Count
+          item.Count = parseInt(item.Count) - 1
+          item.Price_Total = parseFloat(action.payload.Frice_Food) * item.Count
         }
       })
       state.foods.map((item, index)=> {
@@ -166,11 +169,15 @@ const reducer = (state, action) => {
       }
     case ACTION_GET_FAVORITE:
       state.foods.map((item) => {
-        action.payload.map((favorite) => {
-          if(item.ID_Food === favorite.ID_Food){
-            item.is_Favorite = true
-          }
-        })
+        if(action.payload.length === 0){
+          item.is_Favorite = false
+        } else {
+          action.payload.map((favorite) => {
+            if(item.ID_Food === favorite.ID_Food){
+              item.is_Favorite = true
+            }
+          })
+        }
       })
       return {
         ...state,
@@ -210,6 +217,11 @@ const reducer = (state, action) => {
           SlideShow: [state.restaurant.Link_Slide_1, state.restaurant.Link_Slide_2]
         },...action.payload]
       }
+    case ACTION_SET_BILL_RELOAD:
+      return {
+        ...state,
+        load_bills: !state.load_bills
+      }
     case ACTION_SET_RELOAD:
       return {
         ...state,
@@ -227,9 +239,36 @@ const reducer = (state, action) => {
           ,...action.payload.foods]
       }
     case ACTION_SET_BILL:
+      state.foods.map((item) => {
+        action.payload.bill_details.map((detail) => {
+          if(item.ID_Food === detail.ID_Food){
+            item.Count = detail.Count
+            item.Price_Total = detail.Price_Total
+          }
+        })
+      })
       return {
         ...state,
-        bill: action.payload
+        bill: action.payload.bill
+      }
+    case ACTION_DONE_INSERT_BILL:
+      state.foods.map((item) => {
+        item.Count = 0
+        item.Price_Total = 0
+      })
+      return {
+        ...state,
+        bill:{
+          "ID_Bill": "-1",
+          "ID_Cus": "0",
+          "Total": 0.0,
+          "Time": "",
+          "Address": "",
+          "Shipping_fee": 0,
+          "done": '0',
+          "distance": 0
+        },
+        load_bills: !state.load_bills
       }
     default:
       return state

@@ -7,6 +7,7 @@ import ReviewItem from "./ReviewItem"
 import BillItem from "./BillItem"
 import CartItem from "./CartItem"
 import FeedBackItem from "./FeedBackItem"
+import LoadItem from "./LoadItem"
 
 export {
   Toolbar,
@@ -17,5 +18,6 @@ export {
   ReviewItem,
   BillItem,
   CartItem,
-  FeedBackItem
+  FeedBackItem,
+  LoadItem
 }

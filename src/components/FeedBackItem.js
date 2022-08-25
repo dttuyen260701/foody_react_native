@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TextInput } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Color, FontSize } from '../contants'
 import { HEIGHT } from '../contants/Contants'
 import BorderItem from './BorderItem'
@@ -7,7 +7,9 @@ import {Rating} from 'react-native-ratings'
 
 const FeedBackItem = (props) => {
 
-  const {feedback, onRating} = props
+  const {feedback, onChangeValue} = props
+
+  const [text, setText] = useState(feedback.Reviews)
 
   return (
     <View>
@@ -29,13 +31,18 @@ const FeedBackItem = (props) => {
           startingValue={(parseInt(feedback.Rate) === 0) ? 5 : parseInt(feedback.Rate)}
           style = {{height: HEIGHT*20/300, justifyContent:'center'}}
           readonly = {!(parseInt(feedback.Rate) === 0)}
+          onFinishRating = {rate => onChangeValue(feedback, rate, false)}
         />
         <TextInput
           placeholder={(parseInt(feedback.Rate) === 0) ? 'Your feeling' : ''}
           style={style_FB_item.text_area}
           placeholderTextColor={Color.border_color}
-          value = {feedback.Reviews}
+          value = {text}
           editable = {(parseInt(feedback.Rate) === 0)}
+          onChangeText = {textVL => {
+            onChangeValue(feedback, textVL, true)
+            setText(textVL)
+          }}
           multiline
         />
       </View>

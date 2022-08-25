@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, ScrollView} from 'react-native'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, memo } from 'react'
 import { HEIGHT, WIDTH } from '../contants/Contants'
 import { Color, FontSize } from '../contants'
 
@@ -92,4 +92,4 @@ const style_SlideShow = StyleSheet.create({
   },
 })
 
-export default SlideShow
+export default memo(SlideShow)

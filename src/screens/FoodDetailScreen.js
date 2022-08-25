@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Alert, TouchableOpacity, StyleSheet, SafeAreaView, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import {FirstReviewItem, ReviewItem, Toolbar} from '../components'
+import {FirstReviewItem, LoadItem, ReviewItem, Toolbar} from '../components'
 import { HEIGHT, WIDTH } from '../contants/Contants'
 import { Color, FontSize, Methods } from '../contants'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -89,27 +89,29 @@ const FoodDetailScreen = (props) => {
         left_Press = {() => goBack()}
         right_Press = {() => info_click()}
       />
-      <FlatList
-        data = {state_RV.reviews}
-        renderItem = {({item, index}) => (
-          (index === 0) ?
-          <FirstReviewItem
-            food = {item.food}
-            key = {index}
-          /> :
-          <ReviewItem 
-            reviews={item}
-            key={index}
-          />
-        )}
-        style={{marginTop: 0, flex:1}}
-        refreshControl = {
-          <RefreshControl
-            refreshing = {state_RV.refreshing}
-            onRefresh = {() => load_rv()}
-          />
-        }
-      />
+      {(state_RV.reviews.length <= 1)
+        ? <LoadItem/> :
+        <FlatList
+          data = {state_RV.reviews}
+          renderItem = {({item, index}) => (
+            (index === 0) ?
+            <FirstReviewItem
+              food = {item.food}
+              key = {index}
+            /> :
+            <ReviewItem 
+              reviews={item}
+              key={index}
+            />
+          )}
+          style={{marginTop: 0, flex:1}}
+          refreshControl = {
+            <RefreshControl
+              refreshing = {state_RV.refreshing}
+              onRefresh = {() => load_rv()}
+            />
+          }
+        />}
       <View 
         style={style_Food_Detail.parent_view}
       >

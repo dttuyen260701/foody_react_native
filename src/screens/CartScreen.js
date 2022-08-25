@@ -60,7 +60,10 @@ const CartScreen = (props) => {
       navigate('PickMapScreen')
     } else {
       if(cartState.bill.done === "1"){
-        alert('RE-ODER')
+        dispatch(Actions.set_bill({
+          bill: cartState.bill,
+          bill_details: [...cartState.billDetails]
+        }))
       } else {
         alert('TOO LONG')
       }
@@ -68,10 +71,41 @@ const CartScreen = (props) => {
   }
 
   const onOrderPress = () => {
+    let day = new Date()
     if(for_screen){
-      alert('order')
+      if(state.user.ID_Cus != '-1'){
+        Methods.insert_bill_data({
+          ...cartState.bill,
+          ID_Cus: state.user.ID_Cus,
+          Time: `${day.getFullYear()}-${day.getMonth() + 1}-${day.getDate()} ${day.getHours()}:${day.getMinutes()}:${day.getSeconds()}`
+        }).then(nextID => {
+          if(nextID.Next_ID != -1){
+            cartState.billDetails.map((item, index) => {
+              Methods.Insert_bill_details_data({
+                ...item,
+                ID_Bill: nextID.Next_ID,
+                Rate: 0,
+                Reviews: ""
+              }).then(resp => {
+                if(index === cartState.billDetails.length - 1){
+                  dispatch(Actions.done_insert_bill())
+                  navigate('BillScreen')
+                }
+              }).catch(err => console.log('bill detail: ', err))
+            })
+          }
+        }).catch(err => console.log('insert bill: ', err))
+      }
+      else {
+        console.log(state.user)
+      }
     } else {
-      navigate('FeedBackScreen', {billDetails: cartState.billDetails})
+      Methods.update_bills_data(cartState.bill.ID_Bill).then(resp => {
+        if(resp.value){
+          dispatch(Actions.set_bill_reload())
+          navigate('FeedBackScreen', {billDetails: cartState.billDetails})
+        }
+      }).catch(err => console.log(err))
     }
   }
 

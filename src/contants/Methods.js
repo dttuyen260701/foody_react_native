@@ -7,7 +7,7 @@ import {
   METHOD_GET_CUSTOMER_DATA_BYID, 
   METHOD_GET_FAVORITE_DATA, 
   METHOD_GET_FOOD_DATA, METHOD_GET_RESTAURANT, 
-  METHOD_GET_REVIEWS_DATA, METHOD_INSERT_CUSTOMER, METHOD_INSERT_FAVORITE_DATA, URL_BILL_API, 
+  METHOD_GET_REVIEWS_DATA, METHOD_INSERT_BILL, METHOD_INSERT_BILL_DETAIL, METHOD_INSERT_CUSTOMER, METHOD_INSERT_FAVORITE_DATA, METHOD_UPDATE_BILL, METHOD_UPDATE_CUSTOMER, METHOD_UPDATE_REVIEW, URL_BILL_API, 
   URL_BILL_DETAIL_API, URL_CUSTOMER_API, 
   URL_FAVORITE_API, URL_FOOD_API, 
   URL_RESTAURANT_API 
@@ -67,6 +67,27 @@ export const register_user = async(gmail, password) => {
     return respone
   } catch (error) {
     console.log("Register: ", error)
+  }
+}
+
+export const update_user = async(customer) => {
+  try {
+    let formData = new FormData();
+    formData.append("data", 
+      JSON.stringify({
+        method_name: METHOD_UPDATE_CUSTOMER
+      })
+    )
+    formData.append("customer", 
+      JSON.stringify(customer)
+    )
+    let responeData = await fetch(URL_CUSTOMER_API, {
+      method: 'POST',
+      body: formData}).catch(error => console.log(error))
+    let respone = await responeData.json()
+    return respone
+  } catch (error) {
+    console.log("Load Cus: ", error)
   }
 }
 
@@ -194,6 +215,48 @@ export const load_bills_data = async(ID_Cus) => {
   }
 } 
 
+export const insert_bill_data = async(bill) => {
+  try {
+    let formData = new FormData();
+    formData.append("data", 
+      JSON.stringify({
+        method_name: METHOD_INSERT_BILL
+      })
+    )
+    formData.append("bill", 
+      JSON.stringify(bill)
+    )
+    let responeData = await fetch(URL_BILL_API, {
+      method: 'POST',
+      body: formData}).catch(error => console.log(error))
+    let respone = await responeData.json()
+    return respone
+  } catch (error) {
+    console.log("Insert Bill: ", error)
+    debugger
+  }
+}
+
+export const update_bills_data = async(ID_Bill) => {
+  try {
+    let formData = new FormData();
+    formData.append("data", 
+      JSON.stringify({
+        method_name: METHOD_UPDATE_BILL,
+        ID_Bill: ID_Bill
+      })
+    )
+    let responeData = await fetch(URL_BILL_API, {
+      method: 'POST',
+      body: formData}).catch(error => console.log(error))
+    let respone = await responeData.json()
+    return respone
+  } catch (error) {
+    console.log("Update Bill: ", error)
+    debugger
+  }
+} 
+
 export const load_bills_details_data = async(ID_Bill) => {
   try {
     let formData = new FormData();
@@ -210,6 +273,52 @@ export const load_bills_details_data = async(ID_Bill) => {
     return respone
   } catch (error) {
     console.log("Load Bill Detail: ", error)
+    debugger
+  }
+}
+
+export const Insert_bill_details_data = async(bill_detail) => {
+  try {
+    let formData = new FormData();
+    formData.append("data", 
+      JSON.stringify({
+        method_name: METHOD_INSERT_BILL_DETAIL,
+      })
+    )
+    formData.append("bill_detail", 
+      JSON.stringify(bill_detail)
+    )
+    let responeData = await fetch(URL_BILL_DETAIL_API, {
+      method: 'POST',
+      body: formData}).catch(error => console.log(error))
+    let respone = await responeData.json()
+    return respone
+  } catch (error) {
+    console.log("Insert Bill Detail: ", error)
+    debugger
+  }
+}
+
+export const update_bill_details_data = async(bill_detail) => {
+  try {
+    debugger
+    let formData = new FormData();
+    formData.append("data", 
+      JSON.stringify({
+        method_name: METHOD_UPDATE_REVIEW,
+      })
+    )
+    formData.append("bill_detail", 
+      JSON.stringify(bill_detail)
+    )
+    let responeData = await fetch(URL_BILL_DETAIL_API, {
+      method: 'POST',
+      body: formData}).catch(error => console.log(error))
+    debugger
+    let respone = await responeData.json()
+    return respone
+  } catch (error) {
+    console.log("Update Bill Detail Review: ", error)
     debugger
   }
 }
