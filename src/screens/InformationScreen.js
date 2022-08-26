@@ -61,7 +61,7 @@ const InformationScreen = (props) => {
         style = {style_Profile.image}
       />
       <View style={{height:1, backgroundColor:'black'}}></View>
-      <View style ={{height: HEIGHT*3/8}}>
+      <View style ={{flex: 1}}>
         <View style={{flexDirection:'row', padding: 10}}>
           <Text style={style_Profile.text_title}>
             Mail: 

@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, FlatList, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { BillItem, Toolbar } from '../components'
+import { BillItem, LoadItem, Toolbar } from '../components'
 import { useBillState } from '../provider'
 import { Methods } from '../contants'
 
@@ -28,7 +28,7 @@ const BillScreen = (props) => {
   const load_bills = () => {
     setState_Bill({
       refreshing: true,
-      reviews: []
+      bills: []
     })
     Methods.load_bills_data(state.user.ID_Cus).then(respone_bills => {
       setState_Bill({
@@ -54,7 +54,8 @@ const BillScreen = (props) => {
       <Toolbar
         title = {'Bills'}
       />
-      <FlatList
+     { (state_Bill.bills.length === 0) 
+      ? <LoadItem/> : <FlatList
         style = {{flex: 1}}
         data = {state_Bill.bills}
         renderItem = {({item, index}) => {
@@ -72,7 +73,7 @@ const BillScreen = (props) => {
             onRefresh = {() => load_bills()}
           />
         }
-      />
+      />}
     </SafeAreaView>
   )
 }
